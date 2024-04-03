@@ -12,9 +12,11 @@ WORKDIR /scratch
 
 # Prepare the folder where we are putting all the files
 RUN mkdir /app
+RUN mkdir ../demia.go
 
 # Copy everything from the current directory to the PWD(Present Working Directory) inside the container
-COPY . .
+COPY ./inx-faucet .
+COPY ./demia.go ../demia.go
 
 # Download go modules
 RUN go mod download
@@ -24,7 +26,7 @@ RUN go mod verify
 RUN go build -o /app/inx-faucet -a -ldflags="-w -s -X=github.com/iotaledger/inx-faucet/components/app.Version=${BUILD_VERSION}"
 
 # Copy the assets
-COPY ./config_defaults.json /app/config.json
+COPY inx-faucet/config_defaults.json /app/config.json
 
 ############################
 # Image
